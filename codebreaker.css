@@ -1,0 +1,90 @@
+body
+{
+  text-align: center;
+  margin: auto;
+  font: 15px Helvetica;
+  max-height: 1024px;
+  max-width: 1280px;
+  background-color: #727272;
+  color: #404040;
+  padding: 10px;
+
+}
+th
+{
+  font: 35px Helvetica;
+  color: #A0A0A0;
+  line-height: 1;
+  text-decoration: underline;
+}
+td, tr
+{
+  font: 25px Helvetica;
+  border: 3px solid #727272;
+  color: #404040;
+}
+h1
+{
+  font: 85px Courier;
+  color: #A0A0A0;
+  text-shadow: 3px 3px #404040;
+  line-height: 0.35;
+  margin-top: 100px;
+}
+h2
+{
+  font: 25px Helvetica;
+  color: #404040;
+  line-height: 0;
+}
+.codepad
+{
+  style: inline-block;
+  width: 192px;
+  border-style: solid;
+  border-width: thick;
+  border-color: #727272;
+  margin: auto;
+  margin-top: 1%;
+}
+.numpad
+{
+  font: 50px Helvetica;
+  border: 3px solid #727272;
+  color: #606060;
+  background-color: #A0A0A0;
+  padding: 5px;
+}
+#digits
+{
+  font: 50px Helvetica;
+  background-color: #606060;
+  color: #A0A0A0;
+  padding: 5px;
+  letter-spacing: 5px;
+  border: 3px solid #727272;
+}
+#victory
+{
+  font: 50px Helvetica;
+  text-align: center;
+  color: #28EB0F;
+  margin-top: 150px;
+}
+#logtable
+{
+  float: left;
+}
+#eventtable
+{
+  float: right;
+}
+#healthbar
+{
+  display: block;
+  margin-top: 75px;
+  height: 32px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}

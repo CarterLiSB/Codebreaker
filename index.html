@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<!--
+	Carter Li
+-->
+<html>
+	<head>
+		<title>Codebreaker Revised</title>
+		<link rel = "stylesheet" href = "codebreaker.css" />
+		<style>
+		</style>
+		<script src = "utilities2.js"></script>
+		<script>
+			function initialize()	//Initializes global variables.
+			{
+				guessOutput = document.getElementById("guessout");
+				digitsOutput = document.getElementById("digits");
+				endOutput = document.getElementById("victory");
+				livesOutput = document.getElementById("hp");
+				lives = 7;
+				rounds = 0;
+				guess = "";
+				eventtext = "";
+				victory.style.display = "none";	//Hides victory/lose text.
+				produce123();
+			}
+			function produce123()	//Produces 3 digit random number.
+			{
+				var digit1 = getRandomInteger(1, 3);
+				var digit2 = getRandomInteger(1, 3);
+				digit3 = getRandomInteger(1, 3);
+				code = digit1.toString() + digit2.toString() + digit3.toString();	//Combines the 3 random numbers into a single 3 digit number.
+				code = parseInt(code,10);																					//By seperating them first, this ensures that the 3 digit number will only include the numbers 1, 2, or 3.
+				//alert(code);
+			}
+			function select(value) //Inputs the user selected digits.
+			{
+			  if(guess.length < 3 && lives > 0)
+			  {
+			    guess = guess + value;
+					digitsOutput.innerHTML = guess;
+			    if(guess.length == 3)	//Once the user finished typing in a guess, it will automatically be locked in.
+			    {
+						guess = parseInt(guess,10);
+						rounds = rounds + 1;
+						result();
+			    }
+			  }
+			}
+			function selectevent()	//Randomly choose an event.
+			{
+				if(lives > 0)
+				{
+					var revent = getRandomInteger(1,20);
+					if(revent == 1 || revent == 2 && rounds < 2)	//For the sake of user convenience, I chose to disable the first two events for the first turn.
+					{
+						var revent = getRandomInteger(3,20);
+					}
+					if(revent == 1)
+					{
+							eventtext = "Oh no! You forgot your first guess!";
+							logtable.rows[1].cells[1].innerHTML = "u̶̢͚̇͆ń̷̼̪̘͐͜k̶̮̫̺͋̈́͝n̵͇͙͚̠̾̉o̴̰͕̦̐̈́̈́w̷̥͙̿͑̾̓n̴̻̍̒"	//Replaces the response value of the first guess with gibberish.
+					}
+					if(revent == 2)
+					{
+						eventtext = "You slipped and entered a random code!";
+						var digit4 = getRandomInteger(1, 3);									//Generates a random code that auto enters for the user, possibly wasting a turn.
+						var digit5 = getRandomInteger(1, 3);
+						var digit6 = getRandomInteger(1, 3);
+						guess = digit4.toString() + digit5.toString() + digit6.toString();
+						guess = parseInt(guess,10);
+					}
+					if(revent == 3)
+						eventtext = "The special forces are after you!(-1 turn)";
+					if(revent == 4)
+						eventtext = "The police are rapidly approaching!(-1 turn)";
+					if(revent == 5)
+						eventtext = "The police stopped for doughnuts!(Free turn)";
+					if(revent == 6)
+						eventtext = "The police stubbed their toes!(Free turn)";
+					if(revent == 7)
+						eventtext = "You've found a clue! The last number is " + digit3;
+					if(revent > 7)
+						eventtext = "Nothing occured this round!";
+					var newRow2 = eventtable.insertRow();										//Adds a new row to log the previous events, also includes the round it occured.
+					newRow2.innerHTML = "[" + rounds + "]" + eventtext;
+					if(revent < 5)																					//These are to assign the appropriate colors for negative/postiive.
+						newRow2.style.color = "#8A2124";
+					if(revent == 5 || revent == 6)
+						lives = lives + 1;
+					if(revent == 3 || revent == 4)
+						lives = lives - 1;
+					if(revent < 8 && revent > 4)
+						newRow2.style.color = "#23B441";
+					if(revent >7)
+						newRow2.style.color = "#404040";
+				}
+			}
+			function result() //Changes the lives accordingly.
+			{
+				selectevent();
+				if(guess == code)
+				{
+					document.getElementById("digits").style.color = "#28EB0F";
+					victory.style.display = "block";
+				}
+				else
+				{
+					lives = lives - 1;
+					livesOutput.innerHTML = lives;
+					if(lives < 1)
+					{
+						livesOutput.innerHTML = "No";
+						victory.style.display = "block";
+						endOutput.innerHTML = "BUSTED! CODE: [" + code + "]";
+						document.getElementById("victory").style.color = "#B90000";
+						document.getElementById("digits").style.color = "#B90000";
+					}
+					else
+						display();
+				}
+			}
+			function display() //Updates healthbar and logs.
+			{
+					var response = "";
+					if(guess > code)
+						response = "Lower"
+					if(guess == code)
+						response = "Spot on!"
+					if(guess < code)
+						response = "Higher"
+					var newRow = logtable.insertRow();
+					var newCell = newRow.insertCell();
+					newCell.innerHTML = guess;
+					newCell = newRow.insertCell();
+					newCell.innerHTML = response;
+				if(lives >0 && guess != code)
+				{
+					var i = lives.toString();
+					var lifebar = "images/health" + i + ".png"
+					document.getElementById("healthbar").src = lifebar
+					}
+					digitsOutput.innerHTML = "___";
+					guess = "";
+			}
+			function wipe() //Clears currently inputted code.
+			{
+				if(guess.length < 3 && lives > 0)
+				{
+					digitsOutput.innerHTML = "___";
+					guess = "";
+				}
+			}
+		</script>
+	</head>
+		<body onload = "initialize();">
+			<h1>Codebreaker</h1>
+			<h2>Created by Carter Li</h2>
+			<img id="healthbar" src="images/health7.png">
+			<span id = "hp">7</span> Lives Remaining
+			<table style = "width: 530px" id = "logtable">
+				<tr>
+					<th>Guesses</th>
+					<th>Direction</th>
+				</tr>
+			</table>
+			<table style = "width: 530px" id = "eventtable">
+				<tr>
+					<th>Event Log</th>
+				</tr>
+			</table>
+			<table class = "codepad">
+				<tr>
+					<td id = "digits" colspan = "3">___</td>
+				</tr>
+				<tr>
+					<td class = "numpad" onclick = select(1);>1</td>
+					<td class = "numpad" onclick = select(2);>2</td>
+					<td class = "numpad" onclick = select(3);>3</td>
+				</tr>
+				<tr>
+					<td class = "numpad" colspan = "3" onclick = wipe();>CLEAR</td>
+				</tr>
+			</table>
+		<div id = "victory">
+			Congratulations! You've commited a crime!
+		</div>
+	</body>
+</html>
